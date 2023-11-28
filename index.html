@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Leaflet - Geojson</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .leaflet-tooltip {
+            background-color: rgba(255, 255, 255, 0) !important;
+            border: none !important;
+            box-shadow: none !important;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script src="boundary.js"></script>
+    <script src="plots.js"></script>
+    <script>
+
+        const map = L.map('map').setView([42.156720, -93.48220584], 10);
+        map.options.minZoom=14;
+        map.options.maxZoom=19;
+
+        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var styleBoundary = function () {
+            return {
+                fillColor: "#fff",
+                fillOpacity: 0,
+                color: "violet",
+                weight: 4,
+                opacity: 1,
+                dashArray: "30 10",
+            }
+        }
+        var stylePlots = function () {
+            return {
+                fillColor: "#fff",
+                fillOpacity: 0,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+            }
+        }
+
+        var popupOptions = {
+            autoPan: false,
+            closeButton: false,
+            className: 'popupCustom',
+        }
+
+        var eachLayer = function (feature, layer) {
+
+            layer.bindTooltip(layer.feature.properties.name, {
+                permanent: true,
+                direction: "center",
+                opacity: 1,
+                className: 'county-label-tooltip',
+
+            });
+
+            var popup = L.popup();
+            popup.setContent(layer.feature.properties.name);
+            layer.bindPopup(popup);
+
+            layer.on('mouseover', function (e) {
+                var popup = e.target.getPopup();
+                popup.setLatLng(e.latlng).openOn(map);
+            });
+
+            layer.on('mousemove', function (e) {
+                popup.setLatLng(e.latlng).openOn(map);
+            });
+
+            layer.on('mouseout', function (e) {
+                e.target.closePopup();
+            });
+
+        }
+
+        let boundaryLayer = L.geoJSON(boundary, {
+            style: styleBoundary,
+        }).addTo(map);
+
+        let plotLayer = L.geoJSON(plots, {
+            style: stylePlots,
+            onEachFeature: eachLayer
+        }).addTo(map);
+
+        map.fitBounds(boundaryLayer.getBounds());
+        // map.setMaxBounds(rolandLayer.getBounds());
+
+    </script>
+
+
+
+</body>
+
+</html>
