@@ -18,6 +18,10 @@
     <script src="https://opengeo.tech/maps/leaflet-search/src/leaflet-search.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <style>
         html,
         body {
@@ -228,7 +232,7 @@
                         var popup = L.popup();
                         let str_popup = '<p style="font-weight:bold; font-size: 10px">' + feature.properties.name + '</p>';
 
-                        if (feature.properties.name == 'B11' || feature.properties.name == 'B12')
+                        if (feature.properties.name == '100 - 40' || feature.properties.name == '99 - 42' || feature.properties.name == '108 - 24')
                             str_popup += `<div id="myCarousel" class="carousel slide" data-ride="carousel" style="min-width:250px">
                                 <!-- Indicators -->
                                 <ol class="carousel-indicators">
@@ -240,15 +244,15 @@
                                 <!-- Wrapper for slides -->
                                 <div class="carousel-inner">
                                 <div class="item active">
-                                    <img src="assets/images/interior-11.jpeg" style="width:100%;">
+                                    <img src="images/interior-11.jpeg" style="width:100%;">
                                 </div>
                             
                                 <div class="item">
-                                    <img src="assets/images/interior-12.jpeg" style="width:100%;">
+                                    <img src="images/interior-12.jpeg" style="width:100%;">
                                 </div>
                                 
                                 <div class="item">
-                                    <img src="assets/images/newhome-800x500.png" style="width:100%;">
+                                    <img src="images/newhome-800x500.png" style="width:100%;">
                                 </div>
                                 </div>
                             
